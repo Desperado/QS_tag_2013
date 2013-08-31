@@ -17,7 +17,7 @@ class Untitled(unittest.TestCase):
         driver = self.driver
 	driver.get(self.base_url + "/")
         
-        driver.find_element_by_link_text("TestBench").click()
+        #driver.find_element_by_link_text("TestBench").click()
     
 	    
     def is_element_present(self, how, what):

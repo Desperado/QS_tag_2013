@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #coding: utf8 
-
+ 
+from testconfig import config
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -16,7 +17,6 @@ class ImbusTest(unittest.TestCase):
         url      = str(config['environment']['url'])
         platform = str(config['environment']['platform'])
         nodeName = str(config['environment']['nodeName'])
-        version  = str(config['environment']['version'])
 
         desired_capabilities = dict(platform=platform, browserName=browser,
                             version=version, cssSelectorsEnabled=True,

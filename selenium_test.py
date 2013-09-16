@@ -16,14 +16,12 @@ class ImbusTest(unittest.TestCase):
         browser  = str(config['environment']['browser'])
         url      = str(config['environment']['url'])
         platform = str(config['environment']['platform'])
-        nodeName = str(config['environment']['nodeName'])
 
         desired_capabilities = dict(platform=platform, browserName=browser,
-                            version=version, cssSelectorsEnabled=True,
+                             cssSelectorsEnabled=True,
                             setAcceptUntrustedCertificates=True,
                             INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS=True,
                            setPreference = ("network.http.phishy-userpass-length", 255))
-        desired_capabilities["jenkins.nodeName"]=nodeName
             
         if browser == 'chrome_real':
             self.driver = webdriver.Chrome()

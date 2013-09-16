@@ -8,19 +8,36 @@ from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 import unittest, time, re
 
-class Untitled(unittest.TestCase):
+class ImbusTest(unittest.TestCase):
     def setUp(self):
-        self.driver = webdriver.Chrome()
+	hostname = str(config['environment']['hostname'])
+        port     = str(config['environment']['port'])
+        browser  = str(config['environment']['browser'])
+        url      = str(config['environment']['url'])
+        platform = str(config['environment']['platform'])
+        nodeName = str(config['environment']['nodeName'])
+        version  = str(config['environment']['version'])
+
+        desired_capabilities = dict(platform=platform, browserName=browser,
+                            version=version, cssSelectorsEnabled=True,
+                            setAcceptUntrustedCertificates=True,
+                            INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS=True,
+                           setPreference = ("network.http.phishy-userpass-length", 255))
+        desired_capabilities["jenkins.nodeName"]=nodeName
+            
+        if browser == 'chrome_real':
+            self.driver = webdriver.Chrome()
+                
+        else:
+            self.driver = webdriver.Remote(desired_capabilities=desired_capabilities,
+                            command_executor="http://%s:%s/wd/hub" % (hostname, port))        
         self.driver.implicitly_wait(30)
         self.base_url = "http://www.imbus.de/"
         self.verificationErrors = []
         self.accept_next_alert = True
     
-    def test_untitled(self):
+    def test_imbus_site(self):
         driver = self.driver
-	driver.get(self.base_url + "/")
-        
-        driver.get(self.base_url + "/")
         self.assertTrue(self.is_element_present(By.CSS_SELECTOR, "img"))
         driver.find_element_by_link_text("Referenzen").click()
         driver.find_element_by_link_text("Tool-Liste").click()

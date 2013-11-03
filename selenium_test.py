@@ -24,6 +24,8 @@ class ImbusTest(unittest.TestCase):
                            setPreference = ("network.http.phishy-userpass-length", 255))
         if browser == 'chrome_real':
             self.driver = webdriver.Chrome()
+	elif browser == 'firefox_real':
+	    self.driver = webdriver.Firefox()
                 
         else:
             self.driver = webdriver.Remote(desired_capabilities=desired_capabilities,

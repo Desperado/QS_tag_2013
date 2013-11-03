@@ -22,7 +22,6 @@ class ImbusTest(unittest.TestCase):
                             setAcceptUntrustedCertificates=True,
                             INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS=True,
                            setPreference = ("network.http.phishy-userpass-length", 255))
-            
         if browser == 'chrome_real':
             self.driver = webdriver.Chrome()
                 
@@ -36,15 +35,18 @@ class ImbusTest(unittest.TestCase):
     
     def test_imbus_site(self):
         driver = self.driver
-        #self.assertTrue(self.is_element_present(By.CSS_SELECTOR, "img"))
-        driver.find_element_by_link_text("Referenzen").click()
-        driver.find_element_by_link_text("Tool-Liste").click()
-        self.assertEqual(u"Softwaretest Werkzeuge im Überblick", driver.title)
-        self.assertEqual("Testtool Review", driver.find_element_by_css_selector("strong").text)
-        driver.find_element_by_link_text("English").click()
-        self.assertEqual("A Survey on Test Tools", driver.title)
-        self.assertEqual("SOFTWARE TESTING SERVICES", driver.find_element_by_xpath("//div[@id='menue']/ul/li[2]/a/span").text) 
-	    
+    	driver.find_element_by_link_text("English").click()
+        driver.find_element_by_link_text("An-/Abreise (D)").click()
+        driver.find_element_by_link_text(u"Produktvorträge").click()
+        driver.find_element_by_link_text("Software-QS-Tag Special").click()
+        try: self.assertEqual("Software-QS-Tag 2013 - Software-QS-Tag Special", driver.title)
+        except AssertionError as e: self.verificationErrors.append(str(e))
+        self.assertEqual("Software-QS-Tag 2013 - Software-QS-Tag Special", driver.title)
+        self.assertRegexpMatches(driver.find_element_by_xpath("//div[@id='c16710']/p[2]").text, "^exact:Die perfekte Mischung aus Theorie und Praxis: Verbinden Sie Ihre Konferenzteilnahme am Software-QS-Tag mit einem zusätzlichen Ein-Tages-Training zu explorativem Testen\\. \nDas Paket: Ein Tag Training Exploratives Testen + zwei Tage Software-QS-Tag für 1\\.350,00 EURO[\\s\\S]*\\. Mit der kombinierten Buchung sparen Sie über 10% gegenüber dem  Einzelpreis der Schulung und zahlen je Teilnehmer den Sonderpreis von 500 Euro \\(zzgl\\. Mwst\\.\\) je Schulung\\.$")
+        self.assertEqual("1. Tag:  Schulung Exploratives Testen", driver.find_element_by_css_selector("#c16680 > h1").text)
+        driver.find_element_by_link_text("Contact").click()
+        self.assertTrue(self.is_element_present(By.CSS_SELECTOR, "h1"))
+
     def is_element_present(self, how, what):
         try: self.driver.find_element(by=how, value=what)
         except NoSuchElementException, e: return False

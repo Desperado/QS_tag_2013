@@ -35,17 +35,19 @@ class ImbusTest(unittest.TestCase):
     
     def test_imbus_site(self):
         driver = self.driver
-    	driver.find_element_by_link_text("English").click()
-        driver.find_element_by_link_text("An-/Abreise (D)").click()
-        driver.find_element_by_link_text(u"Produktvorträge").click()
-        driver.find_element_by_link_text("Software-QS-Tag Special").click()
-        try: self.assertEqual("Software-QS-Tag 2013 - Software-QS-Tag Special", driver.title)
-        except AssertionError as e: self.verificationErrors.append(str(e))
-        self.assertEqual("Software-QS-Tag 2013 - Software-QS-Tag Special", driver.title)
-        self.assertRegexpMatches(driver.find_element_by_xpath("//div[@id='c16710']/p[2]").text, "^exact:Die perfekte Mischung aus Theorie und Praxis: Verbinden Sie Ihre Konferenzteilnahme am Software-QS-Tag mit einem zusätzlichen Ein-Tages-Training zu explorativem Testen\\. \nDas Paket: Ein Tag Training Exploratives Testen + zwei Tage Software-QS-Tag für 1\\.350,00 EURO[\\s\\S]*\\. Mit der kombinierten Buchung sparen Sie über 10% gegenüber dem  Einzelpreis der Schulung und zahlen je Teilnehmer den Sonderpreis von 500 Euro \\(zzgl\\. Mwst\\.\\) je Schulung\\.$")
-        self.assertEqual("1. Tag:  Schulung Exploratives Testen", driver.find_element_by_css_selector("#c16680 > h1").text)
-        driver.find_element_by_link_text("Contact").click()
-        self.assertTrue(self.is_element_present(By.CSS_SELECTOR, "h1"))
+	driver.get(self.base_url)
+	driver.find_element_by_link_text("English").click()
+    	driver.find_element_by_link_text("Innovations in Detail").click()
+    	driver.find_element_by_xpath("//div[@id='menue']/ul/li[5]/a/span").click()
+    	driver.find_element_by_css_selector("a.last > span").click()
+    	driver.find_element_by_xpath("//div[2]/ul/li[3]/a/span").click()
+    	driver.find_element_by_css_selector("a.last > span").click()
+    	driver.find_element_by_xpath("//div[2]/ul/li[2]/a/span").click()
+    	self.assertEqual(u"Main Office Möhrendorf", driver.find_element_by_css_selector("h4").text)
+    	self.assertEqual(u"imbus Rheinland GmbH\nMaternusstraße 44\n50996 Cologne", driver.find_element_by_css_selector("#c15819 > p").text)
+    	driver.find_element_by_link_text("Test Tool List").click()
+    	try: self.assertEqual("A Survey on Test Tools", driver.title)
+    	except AssertionError as e: self.verificationErrors.append(str(e))
 
     def is_element_present(self, how, what):
         try: self.driver.find_element(by=how, value=what)

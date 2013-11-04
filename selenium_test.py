@@ -38,6 +38,7 @@ class ImbusTest(unittest.TestCase):
     def test_imbus_site(self):
         driver = self.driver
 	driver.get(self.base_url)
+        self.assertEqual("The Global Knowledge Marketplace | Maven", driver.title)
         driver.find_element_by_css_selector("div.subnavigation > ul > li > a.active > span").click()
 	self.assertEqual("Microconsulting", driver.find_element_by_css_selector("h1").text)
         driver.find_element_by_xpath("//div[@id='white-navbar']/div/ul/li[2]/a/span").click()

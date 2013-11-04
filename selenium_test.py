@@ -31,25 +31,34 @@ class ImbusTest(unittest.TestCase):
             self.driver = webdriver.Remote(desired_capabilities=desired_capabilities,
                             command_executor="http://%s:%s/wd/hub" % (hostname, port))        
         self.driver.implicitly_wait(30)
-        self.base_url = "http://www.imbus.de/"
+        self.base_url = "http://www.maven.co/"
         self.verificationErrors = []
         self.accept_next_alert = True
     
     def test_imbus_site(self):
         driver = self.driver
 	driver.get(self.base_url)
-	driver.find_element_by_link_text("English").click()
-    	driver.find_element_by_link_text("Innovations in Detail").click()
-    	driver.find_element_by_xpath("//div[@id='menue']/ul/li[5]/a/span").click()
-    	driver.find_element_by_css_selector("a.last > span").click()
-    	driver.find_element_by_xpath("//div[2]/ul/li[3]/a/span").click()
-    	driver.find_element_by_css_selector("a.last > span").click()
-    	driver.find_element_by_xpath("//div[2]/ul/li[2]/a/span").click()
-    	self.assertEqual(u"Main Office Möhrendorf", driver.find_element_by_css_selector("h4").text)
-    	self.assertEqual(u"imbus Rheinland GmbH\nMaternusstraße 44\n50996 Cologne", driver.find_element_by_css_selector("#c15819 > p").text)
-    	driver.find_element_by_link_text("Test Tool List").click()
-    	try: self.assertEqual("A Survey on Test Tools", driver.title)
-    	except AssertionError as e: self.verificationErrors.append(str(e))
+	self.assertEqual("Microconsulting", driver.find_element_by_css_selector("div.subnavigation > ul > li > a.active > span").text)
+        self.assertEqual("Microconsulting", driver.find_element_by_css_selector("h1").text)
+        driver.find_element_by_xpath("//div[@id='white-navbar']/div/ul/li[2]/a/span").click()
+        self.assertEqual("Maven's global consultant network is comprised of thousands of professionals from virtually every conceivable background in over 150 countries worldwide. Our consultant network includes:", driver.find_element_by_css_selector("p").text)
+        driver.find_element_by_css_selector("li.menu-25848 > a > span").click()
+        try: self.assertEqual("Access the Global Knowledge Marketplace | Maven", driver.title)
+        except AssertionError as e: self.verificationErrors.append(str(e))
+        self.assertEqual("Access the Global Knowledge Marketplace | Maven", driver.title)
+        try: self.assertTrue(self.is_element_present(By.CSS_SELECTOR, "div.centered-content.general-image"))
+        except AssertionError as e: self.verificationErrors.append(str(e))
+        try: self.assertEqual("Access the Global Knowledge Marketplace | Maven", driver.title)
+        except AssertionError as e: self.verificationErrors.append(str(e))
+        driver.find_element_by_css_selector("li.menu-34597.last > a > span").click()
+        self.assertEqual("The Business of Halloween", driver.find_element_by_link_text("The Business of Halloween").text)
+        driver.find_element_by_link_text("The Business of Halloween").click()
+        self.assertEqual(u"MavenBlog » Blog Archive » The Business of Halloween", driver.title)
+        driver.find_element_by_link_text("FAQ").click()
+        driver.find_element_by_css_selector("li.menu-34597.last > a > span").click()
+        driver.find_element_by_link_text("About Maven").click()
+        self.assertEqual("Profit from What You Know | Maven", driver.title)
+        self.assertTrue(self.is_element_present(By.CSS_SELECTOR, "div.about-maven-logo"))
 
     def is_element_present(self, how, what):
         try: self.driver.find_element(by=how, value=what)

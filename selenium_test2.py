@@ -36,19 +36,15 @@ class ImbusTest(unittest.TestCase):
         self.verificationErrors = []
         self.accept_next_alert = True
     
-    def test_maven_consultations(self):
-	driver = self.driver
-	driver.get(self.base_url)
-        driver.find_element_by_link_text("Telephone Consultations").click()
-        self.assertEqual("Consult with an Expert | Maven", driver.title)
-        self.assertTrue(self.is_element_present(By.CSS_SELECTOR, "div.centered-content.general-image"))
-        self.assertTrue(self.is_element_present(By.CSS_SELECTOR, "div.centered-content > h1"))
+    def test_maven_surveys(self):
+        driver = self.driver
+        driver.get(self.base_url)
+        driver.find_element_by_link_text("Electronic Surveys").click()
+        self.assertEqual("Survey Experts | Maven", driver.title)
+        self.assertEqual("Electronic Surveys", driver.find_element_by_css_selector("h1").text)
+        self.assertTrue(self.is_element_present(By.CSS_SELECTOR, "div.surveys-image"))
+        self.assertEqual("How it Works", driver.find_element_by_css_selector("div.centered-content > h1").text)
         driver.find_element_by_css_selector("img[alt=\"Maven\"]").click()
-        driver.find_element_by_link_text("Intelligence Markets").click()
-        self.assertTrue(self.is_element_present(By.CSS_SELECTOR, "div.right-col.markets-image"))
-        self.assertEqual("Intelligence Markets | Maven", driver.title)
-        self.assertEqual("", driver.find_element_by_css_selector("a.blank-window.linkedin").text)
-        self.assertTrue(self.is_element_present(By.CSS_SELECTOR, "a.blank-window.google"))
 
     def is_element_present(self, how, what):
         try: self.driver.find_element(by=how, value=what)

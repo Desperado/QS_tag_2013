@@ -4,6 +4,7 @@
 from testconfig import config
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
@@ -35,7 +36,7 @@ class ImbusTest(unittest.TestCase):
         self.verificationErrors = []
         self.accept_next_alert = True
     
-    def test_maven_site(self):
+    def test_maven_surveys(self):
         driver = self.driver
         driver.get(self.base_url)
         driver.find_element_by_link_text("Electronic Surveys").click()
@@ -44,6 +45,10 @@ class ImbusTest(unittest.TestCase):
         self.assertTrue(self.is_element_present(By.CSS_SELECTOR, "div.surveys-image"))
         self.assertEqual("How it Works", driver.find_element_by_css_selector("div.centered-content > h1").text)
         driver.find_element_by_css_selector("img[alt=\"Maven\"]").click()
+
+    def test_maven_consultations(self):
+	driver = self.driver
+	driver.get(self.base_url)
         driver.find_element_by_link_text("Telephone Consultations").click()
         self.assertEqual("Consult with an Expert | Maven", driver.title)
         self.assertTrue(self.is_element_present(By.CSS_SELECTOR, "div.centered-content.general-image"))
